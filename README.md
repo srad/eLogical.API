@@ -1,5 +1,7 @@
 # eLogical API
 
+[![Build Status](https://srad.visualstudio.com/elogical-node/_apis/build/status/srad.eLogical.API?branchName=master)](https://srad.visualstudio.com/elogical-node/_build/latest?definitionId=3&branchName=master)
+
 Contains the server code for eLogical. This only handles API calls.
 
 It's build on following components:
