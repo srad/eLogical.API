@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const connect = require("../model/mongoose");
+const connect = require("../services/mongoose");
 
 router.post("/", function (req, res, next) {
   connect.then(models => {

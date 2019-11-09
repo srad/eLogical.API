@@ -10,6 +10,12 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const store = new MongoDBStore({
+  uri: process.env.CONNECTION_STRING,
+  collection: "sessions",
+  databaseName: "elogical"
+});
 
 const answerRoute = require("./routes/answer");
 const clientRoute = require("./routes/client");
@@ -28,6 +34,7 @@ app.use(session({
   secret: process.env.SECRET || "You secret",
   resave: false,
   saveUninitialized: true,
+  store: store,
   cookie: {secure: process.env.NODE_ENV === "production", maxAge: 1000 * 60 * 60 * 24 * 180},
 }));
 

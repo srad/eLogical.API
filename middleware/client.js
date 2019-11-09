@@ -1,4 +1,4 @@
-const connect = require("../model/mongoose");
+const connect = require("../services/mongoose");
 const uuid = require("uuid");
 const {uniqueNamesGenerator} = require("unique-names-generator");
 

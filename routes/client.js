@@ -1,21 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const connect = require("../model/mongoose");
+const connect = require("../services/mongoose");
 
 router.get("/", function (req, res, next) {
   connect.then(models => {
+    // Only expose this data to the client.
+    const user = {
+      last: req.session.user.last,
+      name: req.session.user.name,
+    };
     models.Answer.findOne({client: req.session.clientid}).sort({created: -1}).limit(1)
       .then(doc => {
         if (doc) {
           res.send({
-            exercise: doc.exercise,
-            level: doc.level,
-            current: doc.current,
-            score: doc.score,
-            created: doc.created,
+            last: {
+              exercise: doc.exercise,
+              level: doc.level,
+              current: doc.current,
+              score: doc.score,
+              created: doc.created,
+            },
+            user,
           });
         } else {
-          res.send(undefined);
+          res.send({user});
         }
       })
       .catch(error => {
