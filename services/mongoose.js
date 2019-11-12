@@ -28,7 +28,7 @@ const url = process.env.CONNECTION_STRING;
 module.exports = new Promise((resolve, reject) => {
   mongoose.connect(url, {
     useNewUrlParser: true,
-    retrywrites: false,
+    // retrywrites: false,
     useFindAndModify: false,
     useUnifiedTopology: true,
     useCreateIndex: true,

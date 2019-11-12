@@ -8,15 +8,20 @@ const {uniqueNamesGenerator} = require("unique-names-generator");
 // |================================================
 
 module.exports = function (req, res, next) {
+
+  console.log("DEBUG 1");
   // Auto generate for now user names.
-  if (!req.session.clientid) {
-    req.session.clientid = uuid.v4();
+  if (!req.user.client) {
+    req.user.client = uuid.v4();
+
+    console.log("New ClientID: "+req.user.client);
   }
 
   connect.then(models => {
-    const newClient = {client: req.session.clientid, last: new Date()};
+    console.log("DEBUG 2");
+    const newClient = {client: req.user.client, last: new Date()};
 
-    models.Client.findOne({client: req.session.clientid})
+    models.Client.findOne({client: req.user.client})
       .then(doc => {
         if (!doc) {
           newClient.name = uniqueNamesGenerator({
@@ -24,14 +29,15 @@ module.exports = function (req, res, next) {
             length: 3,
           });
           models.Client.create(newClient).then(() => {
-            req.session.user = newClient;
+            console.log("NEW CLIENT: "+JSON.stringify(newClient));
+            req.user = newClient;
             next();
           }).catch(error => {
             res.status(400);
             next();
           });
         } else {
-          req.session.user = doc;
+          req.user = doc;
           next();
         }
       })

@@ -4,7 +4,8 @@ const connect = require("../services/mongoose");
 
 router.get('/leaderboard', function(req, res) {
   var token = req.headers.authorization  || "NOT FOUND"; // DEBUG
-  res.send('Your Header is: '+token);
+  var user = req.user  || "NOT FOUND"; // DEBUG
+  res.send('Your user is: '+JSON.stringify(user));
 });
 
 
@@ -12,10 +13,10 @@ router.get("/", function (req, res, next) {
   connect.then(models => {
     // Only expose this data to the client.
     const user = {
-      last: req.session.user.last,
-      name: req.session.user.name,
+      last: req.user.last,
+      name: req.user.name,
     };
-    models.Answer.findOne({client: req.session.clientid}).sort({created: -1}).limit(1)
+    models.Answer.findOne({client: req.user.clientid}).sort({created: -1}).limit(1)
       .then(doc => {
         if (doc) {
           res.send({
