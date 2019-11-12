@@ -17,12 +17,15 @@ const logger = require("morgan");
 //   collection: "sessions",
 //   databaseName: "elogical"
 // });
-const jwt = require('express-jwt');
-var cors = require('cors')
+const jwtMiddleware = require('express-jwt');
+const cors = require('cors')
 
 const answerRoute = require("./routes/answer");
 const clientRoute = require("./routes/client");
+const authRoute = require("./routes/auth");
 // const clientMiddleware = require("./middleware/client");
+
+const SECRET = process.env.SECRET || "You secret";
 
 const app = express();
 
@@ -44,7 +47,14 @@ app.set("trustproxy", true);
 
 // app.use(clientMiddleware);
 
-app.use("/client", clientRoute);
-app.use("/answer", answerRoute);
+app.use("/client", jwtMiddleware({secret: SECRET}), clientRoute);
+app.use("/answer", jwtMiddleware({secret: SECRET}), answerRoute);
+app.use("/auth", authRoute);
+
+app.use(function (err, req, res, next) {
+    if (err.name === "UnauthorizedError") {
+      res.status(401).send("Invalid token!");
+    }
+  });
 
 module.exports = app;

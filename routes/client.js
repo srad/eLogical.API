@@ -1,20 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const connect = require("../services/mongoose");
-var jwt = require('jsonwebtoken');
-
-const secret = process.env.SECRET || "You secret";
 
 router.get('/leaderboard', function(req, res) {
-  var token = req.header.Authorisation || "NOT FOUND"; // DEBUG
+  var token = req.headers.authorization  || "NOT FOUND"; // DEBUG
   res.send('Your Header is: '+token);
 });
 
-router.get("/token", function(req, res) {
-  console.log("TEST client/token successfull");
-  var token = jwt.sign({ foo: 'bar' }, secret);
-  res.send(token);
-});
 
 router.get("/", function (req, res, next) {
   connect.then(models => {
