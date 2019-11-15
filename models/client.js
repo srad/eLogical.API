@@ -1,25 +1,36 @@
-const connect = require("../services/mongoose");
-const uuid = require("uuid");
+const connector = require("../services/mongoose");
 const { uniqueNamesGenerator } = require("unique-names-generator");
 
-var createNewClient = function () {
-  const newClient = {
-    client: uuid.v4(),
-    last: new Date(),
-    name: uniqueNamesGenerator({
-      separator: "-",
-      length: 3,
-    })
-  };
-
-  return connect.then(models => {
-    return models.Client.create(newClient).then(() => {
-      return newClient;
-    }).catch(error => {
-      throw new Error(error); // TODO
-      // return error; // TODO
+module.exports = {
+  /**
+   * @param {String} token 
+   */
+  create() {
+    return {
+      client: undefined,
+      last: new Date(),
+      name: uniqueNamesGenerator({
+        separator: "-",
+        length: 2,
+      })
+    };
+  },
+  save(data) {
+    return new Promise((resolve, reject) => {
+      connector.then(models => {
+        models.Client.create(data) 
+          .then(() => resolve(data))
+          .catch(error => reject(error));
+      });
     });
-  });
+  },
+  find(token) {
+    return new Promise((resolve, reject) => {
+      connector.then(models => {
+        models.Client.find({token}) 
+          .then(() => resolve(data))
+          .catch(error => reject(error));
+      });
+    });
+  }
 };
-
-module.exports = createNewClient;
