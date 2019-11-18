@@ -19,7 +19,10 @@ const clientRoute = require("./routes/client");
 const answerRoute = require("./routes/answer");
 const authRoute = require("./routes/auth");
 
+const CryptoJS = require("crypto-js");
+
 const SECRET = process.env.SECRET || "You secret";
+const ENCRYPT_KEY = process.env.ENCRYPT_KEY || "12345";
 
 const app = express();
 
@@ -42,6 +45,16 @@ app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     res.status(401).send("Invalid token!");
   }
+});
+
+app.use((req, res, next) => {
+  if (req.body.data && req.headers.encrypted && req.headers.encrypted === "1") {
+    console.log("req.body.data", req.body.data);
+    const bytes  = CryptoJS.AES.decrypt(req.body.data, ENCRYPT_KEY);
+    const decoded = bytes.toString(CryptoJS.enc.Utf8);
+    req.body = JSON.parse(decoded);
+  }
+  next();
 });
 
 app.use(jwt({secret: SECRET}).unless({path: ["/auth"]}));
