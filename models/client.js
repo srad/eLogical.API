@@ -2,9 +2,6 @@ const connector = require("../services/mongoose");
 const { uniqueNamesGenerator } = require("unique-names-generator");
 
 module.exports = {
-  /**
-   * @param {String} token 
-   */
   create() {
     return {
       client: undefined,
