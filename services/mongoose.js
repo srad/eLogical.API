@@ -2,16 +2,23 @@ const mongoose = require("mongoose");
 
 const schema = {
   answer: new mongoose.Schema({
-    "level": Object,
-    "progress": Object,
-    "score": Number,
-    "client": mongoose.Schema.Types.ObjectId,
-    "created": Date,
+    "level": new mongoose.Schema({
+      current: {type: Number, min:1, max:100},
+      max: {type: Number, min:1, max:100},
+    }),
+    "progress": new mongoose.Schema({
+      current: {type: Number, min:1, max:100},
+      max: {type: Number, min:1, max:100},
+    }),
+    "score": {type: Number, max: 100, min: 1, required: true},
+    "client": {type: mongoose.Schema.Types.ObjectId, max: 200}, // client._id
+    "created": {type: Date, required: true},
   }),
   client: new mongoose.Schema({
-    "client": String,
-    "name": String,
-    "last": Date,
+    // _id default
+    "client": {type: String, required: true, max: 200}, // token 
+    "name": {type: String, required: true, max: 50},
+    "last": {type: Date, required: true},
   }),
 };
 
