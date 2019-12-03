@@ -1,8 +1,6 @@
 # eLogical API
 
-[![Build Status](https://srad.visualstudio.com/elogical-node/_apis/build/status/srad.eLogical.API?branchName=master)](https://srad.visualstudio.com/elogical-node/_build/latest?definitionId=3&branchName=master)
-
-Contains the server code for eLogical. This only handles API calls.
+[![Build Status](http://sedrad.com:8080/buildStatus/icon?job=eLogical.API)](http://sedrad.com:8080/job/eLogical.API/)
 
 It's build on following components:
 1. This app is base on [Express](https://www.npmjs.com/package/express).
