@@ -28,14 +28,14 @@ router.get("/stats", (req, res, next) => {
   });
 });
 
-router.get("/top", function (req, res, next) {
+router.get("/top/:limit(\d+)?", function (req, res, next) {
   connect.then(models => {
     models.Answer.aggregate([
       {$group: {_id: "$client", total: {$max: "$score"}}},
       {$lookup: {from: "clients", localField: "_id", foreignField: "_id", as: "client"}},
       {$project: {_id: false, total: true, client: {name: true}}},
       {$sort: {total: -1}},
-      {$limit: 10},
+      {$limit: req.params || 10},
     ]).exec((error, result) => {
       if (error) {
         res.status(400).send({error});
