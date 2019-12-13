@@ -49,7 +49,7 @@ app.use(function (err, req, res, next) {
 
 app.use((req, res, next) => {
   if (req.body.data && req.headers.encrypted && req.headers.encrypted === "1") {
-    console.log("req.body.data", req.body.data);
+    //console.log("req.body.data", req.body.data);
     const bytes  = CryptoJS.AES.decrypt(req.body.data, ENCRYPT_KEY);
     const decoded = bytes.toString(CryptoJS.enc.Utf8);
     req.body = JSON.parse(decoded);
@@ -57,7 +57,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(jwt({secret: SECRET}).unless({path: ["/auth"]}));
+app.use(jwt({secret: SECRET}).unless({path: ["/auth", "/client/top"]}));
 app.use("/client", clientRoute);
 app.use("/answer", answerRoute);
 app.use("/auth", authRoute);
