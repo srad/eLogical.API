@@ -57,7 +57,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(jwt({secret: SECRET}).unless({path: ["/auth", /\/client\/top\/*/]}));
+app.use(jwt({secret: SECRET}).unless({path: ["/auth", /^\/client\/top$/, /^\/client\/top\/\d+$/]}));
 app.use("/client", clientRoute);
 app.use("/answer", answerRoute);
 app.use("/auth", authRoute);
