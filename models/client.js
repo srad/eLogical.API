@@ -23,9 +23,9 @@ module.exports = {
   },
   find(token) {
     return new Promise((resolve, reject) => {
-      connector.then(models => {
-        models.Client.find({token}) 
-          .then(() => resolve(data))
+      connector.then(({Client}) => {
+        Client.find({token})
+          .then(data => resolve(data))
           .catch(error => reject(error));
       });
     });

@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "connect-mongodb-session": "^2.2.0",
-    "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "crypto-js": "^3.1.9-1",
     "debug": "~2.6.9",
@@ -16,10 +15,8 @@
     "express-jwt": "^5.3.1",
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.3.3",
     "mongoose": "^5.7.9",
     "morgan": "~1.9.1",
-    "unique-names-generator": "^3.0.1",
-    "uuid": "^3.3.3"
+    "unique-names-generator": "^3.0.1"
   }
 }

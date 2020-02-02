@@ -22,9 +22,9 @@ router.get("/stats", (req, res, next) => {
           res.send(result);
         });
       }).catch(error => {
-        res.status(400).send({error});
-        next();
-      });
+      res.status(400).send({error});
+      next();
+    });
   });
 });
 

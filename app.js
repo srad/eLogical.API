@@ -9,7 +9,6 @@
 require("dotenv").config();
 
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const jwt = require("express-jwt");
@@ -18,6 +17,7 @@ const cors = require("cors");
 const clientRoute = require("./routes/client");
 const answerRoute = require("./routes/answer");
 const authRoute = require("./routes/auth");
+const trackerRoute = require("./routes/tracker");
 
 const CryptoJS = require("crypto-js");
 
@@ -29,7 +29,6 @@ const app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
 app.use(cors());
 
 app.set("trustproxy", true);
@@ -49,7 +48,6 @@ app.use(function (err, req, res, next) {
 
 app.use((req, res, next) => {
   if (req.body.data && req.headers.encrypted && req.headers.encrypted === "1") {
-    console.log("req.body.data", req.body.data);
     const bytes  = CryptoJS.AES.decrypt(req.body.data, ENCRYPT_KEY);
     const decoded = bytes.toString(CryptoJS.enc.Utf8);
     req.body = JSON.parse(decoded);
@@ -60,6 +58,7 @@ app.use((req, res, next) => {
 app.use(jwt({secret: SECRET}).unless({path: ["/auth"]}));
 app.use("/client", clientRoute);
 app.use("/answer", answerRoute);
+app.use("/tracker", trackerRoute);
 app.use("/auth", authRoute);
 
 module.exports = app;
