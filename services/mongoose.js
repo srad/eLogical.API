@@ -12,7 +12,7 @@ const schema = {
     }),
     "score": {type: Number, max: 100, min: 1, required: true},
     "client": {type: mongoose.Schema.Types.ObjectId, max: 200}, // client._id
-    "created": {type: Date, required: true},
+    "created": {type: Date, required: true, default: Date.now},
   }),
   client: new mongoose.Schema({
     // _id default
@@ -22,6 +22,7 @@ const schema = {
   }),
   tracker: new mongoose.Schema({
     "client": {type: mongoose.Types.ObjectId, required: true, max: 200}, // token
+    "created": {type: Date, required: true, default: Date.now},
     "data": {type: Object, required: true},
   }),
 };
@@ -29,7 +30,7 @@ const schema = {
 schema.answer.index({client: 1});
 schema.answer.index({created: -1});
 schema.client.index({client: 1});
-schema.tracker.index({client: 1});
+schema.tracker.index({client: 1, created: -1});
 
 const Client = mongoose.model("Client", schema.client);
 const Answer = mongoose.model("Answer", schema.answer);
