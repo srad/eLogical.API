@@ -19,6 +19,7 @@ const clientRoute = require("./routes/client");
 const answerRoute = require("./routes/answer");
 const authRoute = require("./routes/auth");
 const trackerRoute = require("./routes/tracker");
+const analyticsRoute = require("./routes/analytics");
 
 const CryptoJS = require("crypto-js");
 
@@ -51,7 +52,7 @@ app.use(function (err, req, res, next) {
 app.use((req, res, next) => {
   if (req.body.data && req.headers.encrypted && req.headers.encrypted === "1") {
     //console.log("req.body.data", req.body.data);
-    const bytes  = CryptoJS.AES.decrypt(req.body.data, ENCRYPT_KEY);
+    const bytes = CryptoJS.AES.decrypt(req.body.data, ENCRYPT_KEY);
     const decoded = bytes.toString(CryptoJS.enc.Utf8);
     req.body = JSON.parse(decoded);
   }
@@ -62,6 +63,7 @@ app.use(jwt({secret: SECRET}).unless({path: ["/auth", /^\/client\/top$/, /^\/cli
 app.use("/client", clientRoute);
 app.use("/answer", answerRoute);
 app.use("/tracker", trackerRoute);
+app.use("/analytics", analyticsRoute);
 app.use("/auth", authRoute);
 
 module.exports = app;

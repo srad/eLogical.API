@@ -1,4 +1,4 @@
-const connector = require("../services/mongoose");
+const connector = require("../services/mongo");
 const { uniqueNamesGenerator } = require("unique-names-generator");
 
 module.exports = {

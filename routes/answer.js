@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const connect = require("../services/mongoose");
+const connect = require("../services/mongo");
 const mongoose = require("mongoose");
 
 router.post("/", function (req, res, next) {
@@ -15,13 +15,8 @@ router.post("/", function (req, res, next) {
           client: mongoose.Types.ObjectId(user._id),
           created: new Date(),
         };
-        Answer.create(doc).then(() => {
-          res.send();
-          next();
-        }).catch(err => {
-          res.status(400).send(err);
-          next();
-        });
+        Answer.create(doc).then(() => res.send())
+          .catch(err => res.status(400).send(err));
       });
   });
 });

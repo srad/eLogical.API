@@ -1,52 +1,27 @@
 const express = require("express");
 const router = express.Router();
-const connect = require("../services/mongoose");
+const connect = require("../services/mongo");
+const mongoose = require("mongoose");
 
 router.get("/stats", (req, res, next) => {
   connect.then(({Client, Answer}) => {
     const token = req.headers.authorization.split(" ")[1];
     Client.findOne({client: token})
       .then(client => {
-        Answer.aggregate([
-          {$match: {client: client._id}},
-          {$group: {_id: "$client", total: {$max: "$score"}}},
-          {$limit: 10},
-          {$project: {_id: false, total: true, client: {name: client.name}}},
-          {$sort: {total: -1}},
-        ]).exec((error, result) => {
-          if (error) {
-            res.status(400).send({error});
-            return;
-          }
-          result.client = {name: client.name};
-          res.send(result);
-        });
-      }).catch(error => {
-      res.status(400).send({error});
-      next();
-    });
+        Answer.query.stats({client}).then(result => res.send(result))
+          .catch(error => res.status(400).send({error}));
+      })
+      .catch(error => res.status(400).send({error}));
   });
 });
 
 router.get("/top/:limit?", function (req, res, next) {
-  connect.then(models => {
-    models.Answer.aggregate([
-      {$group: {_id: "$client", total: {$max: "$score"}}},
-      {$lookup: {from: "clients", localField: "_id", foreignField: "_id", as: "client"}},
-      {$project: {_id: false, total: true, client: {name: true}}},
-      {$sort: {total: -1}},
-      {$limit: Math.min(req.params.limit || 10, 100)},
-    ]).exec((error, result) => {
-      if (error) {
-        res.status(400).send({error});
-        return;
-      }
-      res.send(result);
-    });
-  }).catch(error => {
-    res.status(400).send({error});
-    next();
-  });
+  connect.then(({Answer}) => {
+      Answer.query.topScores({limit: req.params.limit})
+        .then(result => res.send(result))
+        .catch(error => res.status(400).send({error}));
+    })
+    .catch(error => res.status(400).send({error}));
 });
 
 module.exports = router;
