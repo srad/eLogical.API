@@ -11,7 +11,10 @@ router.post("/", function (req, res, next) {
         const doc = {client: mongoose.Types.ObjectId(user._id), data: req.body};
         Tracker.create(doc)
           .then(() => res.send())
-          .catch(err => res.status(400).send(err));
+          .catch(err => {
+            console.error(err);
+            res.status(400).send(err);
+          });
       });
   });
 });
@@ -34,9 +37,15 @@ router.get("/", function (req, res, next) {
               groupEventByDay: result[3],
             });
           })
-          .catch(error => res.status(400).send({error}));
+          .catch(error => {
+            console.error(error);
+            res.status(400).send({error});
+          });
       })
-      .catch(error => res.status(400).send({error}));
+      .catch(error => {
+        console.error(error);
+        res.status(400).send({error});
+      });
   });
 });
 

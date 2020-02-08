@@ -13,7 +13,10 @@ router.post("/", function (req, res) {
 
   client.save(user)
     .then(_ => res.send(user))
-    .catch(error => res.status(401).send(error));
+    .catch(error => {
+      console.error(error);
+      res.status(401).send(error);
+    });
 });
 
 module.exports = router;

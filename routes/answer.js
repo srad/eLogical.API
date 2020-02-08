@@ -16,7 +16,10 @@ router.post("/", function (req, res, next) {
           created: new Date(),
         };
         Answer.create(doc).then(() => res.send())
-          .catch(err => res.status(400).send(err));
+          .catch(err => {
+            console.error(error);
+            res.status(400).send(err);
+          });
       });
   });
 });

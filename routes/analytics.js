@@ -16,8 +16,14 @@ router.get("/", function (req, res, next) {
         groupEventsByDay: result[2],
         countUsers: result[3],
       }))
-      .catch(error => res.status(400).send({error}));
-  }).catch(error => res.status(400).send({error}));
+      .catch(error => {
+        console.error(error);
+        res.status(400).send({error});
+      });
+  }).catch(error => {
+    console.error(error);
+    res.status(400).send({error});
+  });
 });
 
 module.exports = router;
