@@ -2,13 +2,14 @@
 
 [![Build Status](http://sedrad.com:8080/buildStatus/icon?job=eLogical.API)](http://sedrad.com:8080/job/eLogical.API/)
 
-This is the web service for [eLogical](https://github.com/srad/eLogical.API)
+This is the API for the PWA [eLogical](https://github.com/srad/eLogical) and only takes REST
+requests and authenticates client with JWT.
 
 It's build on following components:
 
 1. This app is base on [Express](https://www.npmjs.com/package/express).
-1. Used first Azure Cosmos DB, then switched to MongoDB protocol. First is protocol compatible.
-1. Mongoose as client for the database.
+1. As the databaase first Azure Cosmos DB has been used and works well. Then switching to MongoDB protocol.
+1. Mongoose as client for the database (works with Cosmos DB and Monogo).
 
 ## Quick Start
 
