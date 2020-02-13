@@ -39,7 +39,7 @@ const Client = mongo.model("Client", schema.client);
 const Answer = mongo.model("Answer", schema.answer);
 const Tracker = mongo.model("Tracker", schema.tracker);
 
-const url = process.env.CONNECTION_STRING;
+const url = process.env.CONNECTION_STRING || "mongodb://127.0.0.1:27017/elogical-test";
 
 /**
  * @type {{matchClientGroupByEvent: (function({client: *}): Aggregate), groupByEvents: Aggregate, matchClientGroupBySuccessAndOperator: (function({client: *}): Aggregate), matchClientGroupBySuccess: (function({client: *}): Aggregate), matchClientGroupEventsByDay: (function({client: *}): Aggregate), groupEventsByDay: (function({client: *}): Aggregate)}}
@@ -95,6 +95,28 @@ Tracker.query = {
   ]),
   // All data
   /**
+   * @param {Client} client
+   * @returns {Aggregate}
+   */
+   groupBySuccessAndOperator: Tracker.aggregate([
+    {$match: {"data.event": {$eq: events.confirmInput}}},
+    {$project: {success: "$data.success", ops: "$data.ops", len: {$size: "$data.ops"}}},
+    {$group: {_id: {success: "$success", op: "$ops"}, frequency: {$sum: "$len"}}},
+    {$sort: {"frequency": 1}},
+    //{$group: {_id: {success: "$data.success", op: {$length:"$data.ops"}}, ops: {$push: "$data.ops"}}},
+  ]),
+  /**
+   * @param {Client} client
+   * @returns {Aggregate}
+   */
+  groupByLootSelected: Tracker.aggregate([
+    {$match: {"data.event": {$eq: events.stageCompleted}}},
+    {$project: {loot: "$data.loot", count: {$sum: 1}}},
+    {$group: {_id: {loot: "$loot"}, frequency: {$sum: "$count"}}},
+    {$sort: {"frequency": 1}},
+    //{$group: {_id: {success: "$data.success", op: {$length:"$data.ops"}}, ops: {$push: "$data.ops"}}},
+  ]),
+  /**
    * @returns {Aggregate}
    */
   groupByEvents: Tracker.aggregate([
@@ -109,6 +131,14 @@ Tracker.query = {
     {$match: {"data.event": {$eq: events.confirmInput}}},
     {$project: {success: "$data.success", count: {$sum: 1}}},
     {$group: {_id: {success: "$success"}, frequency: {$sum: "$count"}}},
+  ]),
+    /**
+   * @returns {Aggregate}
+   */
+  groupByGameEndAndDifficulty: Tracker.aggregate([
+    {$match: {"data.event": {$eq: events.gameEnd}}},
+    {$project: {difficulty: "$data.difficulty", count: {$sum: 1}}},
+    {$group: {_id: {difficulty: "$difficulty"}, frequency: {$sum: "$count"}}},
   ]),
   countUsers: Client.estimatedDocumentCount(),
   /**

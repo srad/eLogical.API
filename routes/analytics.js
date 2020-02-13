@@ -9,12 +9,18 @@ router.get("/", function (req, res, next) {
         Tracker.query.groupBySuccess,
         Tracker.query.groupEventsByDay,
         Tracker.query.countUsers,
+        Tracker.query.groupByLootSelected,
+        Tracker.query.groupBySuccessAndOperator,
+        Tracker.query.groupByGameEndAndDifficulty,
       ])
       .then(result => res.send({
         groupByEvents: result[0],
         groupBySuccess: result[1],
         groupEventsByDay: result[2],
         countUsers: result[3],
+        groupByLootSelected: result[4],
+        groupBySuccessAndOperator: result[5],
+        groupByGameEndAndDifficulty: result[6],
       }))
       .catch(error => {
         console.error(error);
