@@ -70,7 +70,7 @@ Tracker.query = {
   matchClientGroupBySuccessAndOperator: ({client}) => Tracker.aggregate([
     {$match: {"client": {"$eq": client._id}, "data.event": {$eq: events.confirmInput}}},
     {$project: {success: "$data.success", ops: "$data.ops", len: {$size: "$data.ops"}}},
-    {$group: {_id: {success: "$success", op: "$ops"}, frequency: {$sum: "$len"}}},
+    {$group: {_id: {success: "$success", op: "$ops"}, frequency: {$sum: 1}}},
     {$sort: {"frequency": 1}},
     //{$group: {_id: {success: "$data.success", op: {$length:"$data.ops"}}, ops: {$push: "$data.ops"}}},
   ]),
@@ -101,7 +101,7 @@ Tracker.query = {
    groupBySuccessAndOperator: Tracker.aggregate([
     {$match: {"data.event": {$eq: events.confirmInput}}},
     {$project: {success: "$data.success", ops: "$data.ops", len: {$size: "$data.ops"}}},
-    {$group: {_id: {success: "$success", op: "$ops"}, frequency: {$sum: "$len"}}},
+    {$group: {_id: {success: "$success", op: "$ops"}, frequency: {$sum: 1}}},
     {$sort: {"frequency": 1}},
     //{$group: {_id: {success: "$data.success", op: {$length:"$data.ops"}}, ops: {$push: "$data.ops"}}},
   ]),
