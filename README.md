@@ -28,7 +28,12 @@ SECRET
 NODE_ENV
 ```
 
-But the only necessary one is the mongodb `CONNECTION_STRING`
+But the only necessary one is the mongodb `CONNECTION_STRING`. If you have a MongoDB instance running on your local machine set the environment variable, i.e. in PowerShell:
+
+```powershell
+$env:CONNECTION_STRING="mongodb://localhost:27017/elogical"
+```
+Run the server:
 
 ```bash
 $ npm start
