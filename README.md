@@ -1,6 +1,6 @@
 # eLogical API
 
-[![Build Status](http://sedrad.com:8080/buildStatus/icon?job=eLogical.API)](http://sedrad.com:8080/job/eLogical.API/)
+[![Build Status](https://jenkins.sedrad.com/buildStatus/icon?job=eLogical.API)](https://jenkins.sedrad.com/job/eLogical.API/)
 
 This is the API for the PWA [eLogical](https://github.com/srad/eLogical) and only takes REST
 requests and authenticates client with JWT.
