@@ -1,6 +1,6 @@
 # eLogical API
 
-[![Build Status](https://jenkins.sedrad.com/buildStatus/icon?job=eLogical.API)](https://jenkins.sedrad.com/job/eLogical.API/)
+![TeamCity build status](https://teamcity.sedrad.com/app/rest/builds/buildType:id:ELogicalApi_Build/statusIcon.svg)
 
 This is the API for the PWA [eLogical](https://github.com/srad/eLogical) and only takes REST
 requests and authenticates client with JWT.
